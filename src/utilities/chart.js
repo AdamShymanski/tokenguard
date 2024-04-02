@@ -10,8 +10,8 @@ import {
   Brush,
   ResponsiveContainer,
 } from "recharts";
-
 import Image from "next/image";
+import Icon from "react-crypto-icons";
 
 import solana_icon from "./../../public/icons/solana_icon_v1.png";
 import ethereum_icon from "./../../public/icons/ethereum_icon.png";
@@ -79,11 +79,12 @@ export default function Chart({ data, startIndex }) {
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Image
+            {/* <Image
               src={solana_icon}
               alt={"Solana Icon"}
               className="h-auto w-3 pr-4"
-            />
+            /> */}
+            <Icon name="btc" size={25} />
             <p
               className="solana"
               style={{
