@@ -1,13 +1,19 @@
 "use client";
 
 //packages
-import React, { Suspense, useState, useEffect } from "react";
+import React, {
+  Suspense,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import Image from "next/image";
 
 //utilities
 // import DateSelector from "../utilities/dateSelector";
-// const Chart = React.lazy(() => import("../utilities/chart"));
-import Chart from "../utilities/chart";
+const Chart = React.lazy(() => import("../utilities/chart"));
+// import Chart from "../utilities/chart";
 
 //pngs
 import charts from "./../../public/charts.png";
@@ -24,7 +30,10 @@ import ethereum_icon from "./../../public/icons/ethereum_icon.png";
 import calendar_icon from "./../../public/icons/calendar_icon.png";
 
 export default function Home() {
-  const [dateRange, setDateRange] = useState(0);
+  const [dateRange, setDateRange] = useState(4);
+  const [growthIndex, setGrowthIndex] = useState(0);
+  const [growthPercentile, setGrowthPercentile] = useState(0);
+
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -46,23 +55,120 @@ export default function Home() {
           ethereum: [...data.blockchain.tg_growth_index],
           solana: [...data.cumulative.tg_growth_index],
         });
+        setGrowthIndex(data.blockchain.tg_growth_index[0].value);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, []);
 
+  const startIndex = useMemo(() => {
+    if (!data?.ethereum) return 0;
+
+    const firstDate = new Date(data.ethereum[0].date);
+
+    let targetDate;
+    switch (dateRange) {
+      case 0:
+        targetDate = new Date(firstDate);
+        targetDate.setDate(targetDate.getDate() + 7);
+        break;
+      case 1:
+        targetDate = new Date(firstDate);
+        targetDate.setDate(targetDate.getDate() + 14);
+        break;
+      case 2:
+        targetDate = new Date(firstDate);
+        targetDate.setDate(targetDate.getDate() + 28);
+        break;
+      case 3:
+        targetDate = new Date(firstDate);
+        targetDate.setMonth(targetDate.getMonth() + 3);
+        break;
+      case 4:
+        let growth =
+          ((data.ethereum[0].value -
+            data.ethereum[data.ethereum.length - 1].value) /
+            data.ethereum[0].value) *
+          100;
+        growth = Math.round(growth); // Round to nearest whole number
+
+        setGrowthPercentile(growth);
+        return 1000;
+      default:
+        return 0;
+    }
+
+    for (let i = data.ethereum.length - 1; i >= 0; i--) {
+      if (new Date(data.ethereum[i].date) < targetDate) {
+        let growth =
+          ((data.ethereum[0].value - data.ethereum[i].value) /
+            data.ethereum[0].value) *
+          100;
+        growth = Math.round(growth); // Round to nearest whole number
+
+        setGrowthPercentile(growth);
+        return i;
+      }
+    }
+  }, [dateRange, data]);
+
+  const dateRangeToDays = useCallback(() => {
+    switch (dateRange) {
+      case 0:
+        return "7 days";
+      case 1:
+        return "14 days";
+      case 2:
+        return "28 days";
+      case 3:
+        return "3 months";
+      case 4:
+        return "ALL";
+      default:
+        return "-";
+    }
+  }, [dateRange]);
+
+  const RenderProcentile = () => {
+    if (growthPercentile >= 0) {
+      return (
+        <div className="flex flex-row items-end w-full mt-2">
+          <h1 className="text-3xl font-bold mr-4">{growthIndex}</h1>{" "}
+          <div className="bg-green-200 px-2.5 py-[1px] rounded mb-1">
+            <p className="text-green-700 text-xs tracking-tight">
+              + {growthPercentile}%
+            </p>
+          </div>
+          <p className="text-xs mb-1 ml-2">/ {dateRangeToDays()}</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-row items-end w-full mt-2">
+          <h1 className="text-3xl font-bold mr-4">{growthIndex}</h1>{" "}
+          <div className="bg-red-200 px-2.5 py-[1px] rounded mb-1">
+            <p className="text-red-700 text-xs tracking-tight">
+              - {Math.abs(growthPercentile)}%
+            </p>
+          </div>
+          <p className="text-xs mb-1 ml-2">/ {dateRangeToDays()}</p>
+        </div>
+      );
+    }
+  };
+
   return (
-    <main className="flex min-h-screen min-w-screen flex-col items-start justify-start p-5 py-7 pb-10 bg-gradient-to-b from-10% from-green-100 via-30% via-slate-50 to-90% to-slate-100">
+    <main className="flex min-h-screen min-w-screen flex-col items-start justify-start p-5 py-7 pb-10 bg-gradient-to-b from-10% from-green-100 via-30% via-slate-50 to-90% to-slate-100 max-w-[890px]">
       <section className="flex flex-row items-center justify-center space-x-3">
-        <Image src={metrics_icon} alt="Metrics Icon" className="w-4 h-4" />
+        <Image src={metrics_icon} alt="Metrics Icon" className="w-4 h-4 " />
         <h3 className="text-custom-grey font-semibold text-lg space-x-2">
           Other Metrics
         </h3>
       </section>
-      <Image src={charts} alt="Charts" className="w-full mt-4" />
+      <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
 
-      <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-5 bg-white drop-shadow">
+      <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-5 bg-white drop-shadow cursor-pointer">
         <Image
           src={ethereum_icon}
           alt="Ethereum Icon"
@@ -91,7 +197,7 @@ export default function Home() {
             />
             <p className="text-xs">COMPARE WITH</p>
           </div>
-          <div className="flex flex-row items-center border border-slate-300 rounded px-4 py-2 mt-3 bg-white drop-shadow">
+          <div className="flex flex-row items-center border border-slate-300 rounded px-4 py-2 mt-3 bg-white drop-shadow cursor-pointer">
             <Image
               src={solana_icon}
               alt={"Solana Icon"}
@@ -109,13 +215,7 @@ export default function Home() {
             />
             <p className="text-xs">GROWTH INDEX</p>
           </div>
-          <div className="flex flex-row items-end w-full mt-2">
-            <h1 className="text-3xl font-bold mr-4">78</h1>{" "}
-            <div className="bg-green-200 px-2.5 py-[1px] rounded mb-1">
-              <p className="text-green-700 text-xs tracking-tight">+ 12%</p>
-            </div>
-            <p className="text-xs mb-1 ml-2">{"/ 28 days"}</p>
-          </div>
+          <RenderProcentile />
 
           <Image src={bar_icon} alt={"Bar Icon"} className="h-3 w-auto mt-1" />
         </aside>
@@ -136,8 +236,8 @@ export default function Home() {
         <div
           className={
             dateRange === 0
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5"
-              : "px-3 py-0.5 mx-[1px]"
+              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
+              : "px-3 py-0.5 mx-[1px] cursor-pointer"
           }
           onClick={() => {
             setDateRange(0);
@@ -148,8 +248,8 @@ export default function Home() {
         <div
           className={
             dateRange === 1
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5"
-              : "px-3 py-0.5 mx-[1px]"
+              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
+              : "px-3 py-0.5 mx-[1px] cursor-pointer"
           }
           onClick={() => {
             setDateRange(1);
@@ -160,8 +260,8 @@ export default function Home() {
         <div
           className={
             dateRange === 2
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5"
-              : "px-3 py-0.5 mx-[1px]"
+              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
+              : "px-3 py-0.5 mx-[1px] cursor-pointer"
           }
           onClick={() => {
             setDateRange(2);
@@ -172,8 +272,8 @@ export default function Home() {
         <div
           className={
             dateRange === 3
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5"
-              : "px-3 py-0.5 mx-[1px]"
+              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
+              : "px-3 py-0.5 mx-[1px] cursor-pointer"
           }
           onClick={() => {
             setDateRange(3);
@@ -184,8 +284,8 @@ export default function Home() {
         <div
           className={
             dateRange === 4
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5"
-              : "px-3 py-0.5 mx-[1px]"
+              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
+              : "px-3 py-0.5 mx-[1px] cursor-pointer"
           }
           onClick={() => {
             setDateRange(4);
@@ -195,9 +295,13 @@ export default function Home() {
         </div>
       </aside>
 
-      {data.ethereum ? <Chart data={data} dateRange={dateRange} /> : null}
-      {/* <Suspense fallback={<div>Loading...</div>}>
-      </Suspense> */}
+      <Suspense fallback={<div>Loading...</div>}>
+        {data?.ethereum ? (
+          <Chart data={data} startIndex={startIndex} />
+        ) : (
+          <div>Loading...</div>
+        )}
+      </Suspense>
     </main>
   );
 }
