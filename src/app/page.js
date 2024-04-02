@@ -39,6 +39,7 @@ export default function Home() {
   useEffect(() => {
     fetch("https://api.tokenguard.io/db-api/growth-index/basic-timeline-data", {
       method: "POST",
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
