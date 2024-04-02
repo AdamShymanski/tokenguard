@@ -1,58 +1,103 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 
-import * as d3 from "d3";
+import {
+  AreaChart,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Area,
+  Brush,
+  ResponsiveContainer,
+} from "recharts";
 
-export default function Chart({ data }) {
-  const margin = { top: 70, right: 60, bottom: 50, left: 80 };
+export default function Chart({ data, dateRange }) {
+  const [startIndex, setStartIndex] = useState(0);
+  let chartArr = useRef([])
 
-  const parsedData = useMemo(() => {
-    if (!data.ethereum) return [];
-    return data.ethereum.map((d) => {
+  useEffect(() => {
+    chartArr = data.ethereum.map((item, index) => {
       return {
-        Date: new Date(d.date),
-        GrowthIndex: d.value,
+        date: item.date,
+        Ethereum: item.value,
+        Solana: data.solana[index].value,
       };
     });
-  }, [data]);
 
-  const width = 1600 - margin.left - margin.right;
-  const height = 800 - margin.top - margin.bottom;
+    switch (dateRange) {
+      case 0:
+        setStartIndex(7);
+        break;
+      case 1:
+        setStartIndex(14);
+        break;
+      case 2:
+        setStartIndex(28);
+        break;
+      case 3:
+        setStartIndex(92);
+        break;
+      case 4:
+        setStartIndex(10000);
+    }
 
-  const x = d3.scaleTime().range([0, width]);
-  x.domain(
-    d3.extent(parsedData, function (d) {
-      return d.Date;
-    })
-  );
+    console.log(chartDate);
+  }, []);
 
-  const y = d3.scaleLinear().range([height, 0]);
-  y.domain([
-    0,
-    d3.max(parsedData, function (d) {
-      return d.GrowthIndex;
-    }) + 1,
-  ]);
-
-  const svgRef = useRef();
-
-  const svg = d3.select("svg");
-  const g = svg.append("g");
-  g.call(d3.axisBottom(x));
-
-  svg
-    .append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
-
-  if (!data.ethereum) return null;
+  if (!data.ethereum || !chartArr) return null;
 
   return (
-    <>
-      <svg
-        ref={svgRef}
-        width={width + margin.left + margin.right}
-        height={height + margin.top + margin.bottom}
-      ></svg>
-    </>
+    <ResponsiveContainer width={"100%"} height={340}>
+      <AreaChart
+        data={chartArr}
+        layout="horizontal"
+        margin={{ top: 10, right: 0, left: -30, bottom: 0 }}
+      >
+        <defs>
+          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#3B63FB" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#3B63FB" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#3886FB" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#3886FB" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+
+        <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+        <YAxis name="Date" tick={{ fontSize: 12 }} />
+
+        <CartesianGrid strokeDasharray="3 3" />
+        <Brush
+          travellerWidth={10}
+          // startIndex={() =>
+          //   chartArr.length() - chartDate >= 0
+          //     ? chartArr.length() - chartDate
+          //     : 0
+          // }
+          // endIndex={() => chartArr.length()}
+          startIndex={33}
+        />
+
+        <Tooltip formatter={(label) => label + " GI"} />
+
+        <Area
+          type="monotone"
+          dataKey="Ethereum"
+          stroke="#3B63FB"
+          fillOpacity={1}
+          fill="url(#colorUv)"
+          name="Ethereum"
+        />
+        <Area
+          type="monotone"
+          dataKey="Solana"
+          stroke="#3886FB"
+          fillOpacity={1}
+          fill="url(#colorPv)"
+          name="Solana"
+        />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 }

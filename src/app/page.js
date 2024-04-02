@@ -52,12 +52,8 @@ export default function Home() {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
-    <main className="flex min-h-screen min-w-screen flex-col items-start justify-start p-5 py-7 bg-gradient-to-b from-10% from-green-100 via-30% via-slate-50 to-90% to-slate-100">
+    <main className="flex min-h-screen min-w-screen flex-col items-start justify-start p-5 py-7 pb-10 bg-gradient-to-b from-10% from-green-100 via-30% via-slate-50 to-90% to-slate-100">
       <section className="flex flex-row items-center justify-center space-x-3">
         <Image src={metrics_icon} alt="Metrics Icon" className="w-4 h-4" />
         <h3 className="text-custom-grey font-semibold text-lg space-x-2">
@@ -136,7 +132,7 @@ export default function Home() {
 
       {/* <DateSelector /> */}
 
-      <aside className="flex flex-row items-center w-full justify-between border border-slate-200 rounded px-6 py-1.5 mt-3 bg-slate-100  font-semibold text-slate-800 text-sm ">
+      <aside className="flex flex-row items-center w-full justify-between border border-slate-200 rounded px-6 py-1.5 mt-3 mb-5 bg-slate-100  font-semibold text-slate-800 text-sm ">
         <div
           className={
             dateRange === 0
@@ -199,9 +195,9 @@ export default function Home() {
         </div>
       </aside>
 
-      <Suspense fallback={<div>Loading...</div>}>
-        {data.ethereum ? <Chart data={data} /> : null}
-      </Suspense>
+      {data.ethereum ? <Chart data={data} dateRange={dateRange} /> : null}
+      {/* <Suspense fallback={<div>Loading...</div>}>
+      </Suspense> */}
     </main>
   );
 }
