@@ -14,9 +14,8 @@ import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 
 //utilities
-// import DateSelector from "../utilities/dateSelector";
 const Chart = React.lazy(() => import("../utilities/chart"));
-// import Chart from "../utilities/chart";
+import DateSelector from "../utilities/dateSelector";
 
 //pngs
 import charts from "./../../public/charts.png";
@@ -251,70 +250,7 @@ export default function Home() {
         <p className="text-xs text-custom-gray">DATE RANGE</p>
       </div>
 
-      {/* <DateSelector /> */}
-
-      <aside className="flex flex-row items-center w-full justify-between border border-slate-200 rounded px-6 py-1.5 mt-3 mb-5 bg-slate-100  font-semibold text-slate-800 text-sm ">
-        <div
-          className={
-            dateRange === 0
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
-              : "px-3 py-0.5 mx-[1px] cursor-pointer"
-          }
-          onClick={() => {
-            setDateRange(0);
-          }}
-        >
-          <p>1W</p>
-        </div>
-        <div
-          className={
-            dateRange === 1
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
-              : "px-3 py-0.5 mx-[1px] cursor-pointer"
-          }
-          onClick={() => {
-            setDateRange(1);
-          }}
-        >
-          <p>2W</p>
-        </div>
-        <div
-          className={
-            dateRange === 2
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
-              : "px-3 py-0.5 mx-[1px] cursor-pointer"
-          }
-          onClick={() => {
-            setDateRange(2);
-          }}
-        >
-          <p>4W</p>
-        </div>
-        <div
-          className={
-            dateRange === 3
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
-              : "px-3 py-0.5 mx-[1px] cursor-pointer"
-          }
-          onClick={() => {
-            setDateRange(3);
-          }}
-        >
-          <p>3M</p>
-        </div>
-        <div
-          className={
-            dateRange === 4
-              ? "bg-white drop-shadow	 border rounded border-slate-300 px-3 py-0.5 cursor-pointer"
-              : "px-3 py-0.5 mx-[1px] cursor-pointer"
-          }
-          onClick={() => {
-            setDateRange(4);
-          }}
-        >
-          <p>ALL</p>
-        </div>
-      </aside>
+      <DateSelector dateRange={dateRange} setDateRange={setDateRange} />
 
       <Suspense
         fallback={<div className="text-custom-gray mt-4">Loading...</div>}
@@ -325,6 +261,7 @@ export default function Home() {
           <div className="text-custom-gray mt-4">Loading...</div>
         )}
       </Suspense>
+      
     </main>
   );
 }
