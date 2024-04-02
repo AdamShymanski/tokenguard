@@ -10,6 +10,8 @@ import React, {
 } from "react";
 import Image from "next/image";
 
+import axios from "axios";
+
 //utilities
 // import DateSelector from "../utilities/dateSelector";
 const Chart = React.lazy(() => import("../utilities/chart"));
@@ -36,22 +38,56 @@ export default function Home() {
 
   const [data, setData] = useState({});
 
+  // useEffect(() => {
+  //   fetch("https://api.tokenguard.io/db-api/growth-index/basic-timeline-data", {
+  //     method: "POST",
+  //     mode: "no-cors",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     withCredentials: false,
+  //     body: JSON.stringify({
+  //       chainName: "ethereum",
+  //       period: "last year",
+  //       metric: "tg_growth_index",
+  //       compareWith: ["solana"],
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setData({
+  //         ethereum: [...data.blockchain.tg_growth_index],
+  //         solana: [...data.cumulative.tg_growth_index],
+  //       });
+  //       setGrowthIndex(
+  //         Math.round(
+  //           data.blockchain.tg_growth_index[
+  //             data.blockchain.tg_growth_index.length - 1
+  //           ].value
+  //         )
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // }, []);
+
+  const url =
+    "https://corsproxy.io/?" +
+    encodeURIComponent(
+      "https://api.tokenguard.io/db-api/growth-index/basic-timeline-data"
+    );
+
   useEffect(() => {
-    fetch("https://api.tokenguard.io/db-api/growth-index/basic-timeline-data", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    axios
+      .post(url, {
         chainName: "ethereum",
         period: "last year",
         metric: "tg_growth_index",
         compareWith: ["solana"],
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+      })
+      .then((response) => {
+        const data = response.data;
         setData({
           ethereum: [...data.blockchain.tg_growth_index],
           solana: [...data.cumulative.tg_growth_index],
@@ -169,7 +205,7 @@ export default function Home() {
     <main className="flex min-h-screen min-w-screen flex-col items-start justify-start p-5 py-7 pb-10 bg-gradient-to-b from-10% from-green-100 via-30% via-slate-50 to-90% to-slate-100 max-w-[890px]">
       <section className="flex flex-row items-center justify-center space-x-3">
         <Image src={metrics_icon} alt="Metrics Icon" className="w-4 h-4 " />
-        <h3 className="text-custom-grey font-semibold text-lg space-x-2">
+        <h3 className="text-custom-gray font-semibold text-lg space-x-2">
           Other Metrics
         </h3>
       </section>
@@ -181,7 +217,7 @@ export default function Home() {
           alt="Ethereum Icon"
           className="h-10 w-auto pr-4"
         />
-        <div className="flex flex-col text-custom-grey">
+        <div className="flex flex-col text-custom-gray">
           <h2 className="flex flex-row items-baseline text-xl font-semibold">
             Ethereum <span className="text-sm ml-2"> Growth Index</span>
           </h2>
@@ -195,7 +231,7 @@ export default function Home() {
         />
       </article>
       <div className="flex flex-row justify-between w-full">
-        <aside className="text-custom-grey mt-8">
+        <aside className="text-custom-gray mt-8">
           <div className="flex flex-row items-center">
             <Image
               src={compare_icon}
@@ -213,7 +249,7 @@ export default function Home() {
             <Image src={x_icon} alt={"Close Icon"} className="h-2.5 w-auto" />
           </div>
         </aside>
-        <aside className="flex flex-col items-start text-custom-grey mt-8">
+        <aside className="flex flex-col items-start text-custom-gray mt-8">
           <div className="flex flex-row items-center">
             <Image
               src={gi_icon}
@@ -234,7 +270,7 @@ export default function Home() {
           alt={"Calendar Icon"}
           className="h-3 w-auto mr-2"
         />
-        <p className="text-xs text-custom-grey">DATE RANGE</p>
+        <p className="text-xs text-custom-gray">DATE RANGE</p>
       </div>
 
       {/* <DateSelector /> */}
@@ -302,7 +338,9 @@ export default function Home() {
         </div>
       </aside>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={<div className="text-custom-gray mt-4">Loading...</div>}
+      >
         {data?.ethereum ? (
           <Chart data={data} startIndex={startIndex} />
         ) : (
