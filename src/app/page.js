@@ -8,9 +8,10 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import Image from "next/image";
 
 import axios from "axios";
+import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
 
 //utilities
 // import DateSelector from "../utilities/dateSelector";
@@ -19,6 +20,7 @@ const Chart = React.lazy(() => import("../utilities/chart"));
 
 //pngs
 import charts from "./../../public/charts.png";
+import charts_v1 from "./../../public/charts_v1.png";
 
 //icons
 import x_icon from "./../../public/icons/x_icon.png";
@@ -32,45 +34,12 @@ import ethereum_icon from "./../../public/icons/ethereum_icon.png";
 import calendar_icon from "./../../public/icons/calendar_icon.png";
 
 export default function Home() {
+  const [data, setData] = useState({});
   const [dateRange, setDateRange] = useState(4);
   const [growthIndex, setGrowthIndex] = useState(0);
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
-  const [data, setData] = useState({});
-
-  // useEffect(() => {
-  //   fetch("https://api.tokenguard.io/db-api/growth-index/basic-timeline-data", {
-  //     method: "POST",
-  //     mode: "no-cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     withCredentials: false,
-  //     body: JSON.stringify({
-  //       chainName: "ethereum",
-  //       period: "last year",
-  //       metric: "tg_growth_index",
-  //       compareWith: ["solana"],
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setData({
-  //         ethereum: [...data.blockchain.tg_growth_index],
-  //         solana: [...data.cumulative.tg_growth_index],
-  //       });
-  //       setGrowthIndex(
-  //         Math.round(
-  //           data.blockchain.tg_growth_index[
-  //             data.blockchain.tg_growth_index.length - 1
-  //           ].value
-  //         )
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // }, []);
+  const viewportSizeChange = useMediaQuery({ minWidth: 761 });
 
   const url =
     "https://corsproxy.io/?" +
@@ -134,7 +103,7 @@ export default function Home() {
             data.ethereum[data.ethereum.length - 1].value) /
             data.ethereum[0].value) *
           100;
-        growth = Math.round(growth); // Round to nearest whole number
+        growth = Math.round(growth);
 
         setGrowthPercentile(growth);
         return 1000;
@@ -148,7 +117,7 @@ export default function Home() {
           ((data.ethereum[0].value - data.ethereum[i].value) /
             data.ethereum[0].value) *
           100;
-        growth = Math.round(growth); // Round to nearest whole number
+        growth = Math.round(growth);
 
         setGrowthPercentile(growth);
         return i;
@@ -209,7 +178,12 @@ export default function Home() {
           Other Metrics
         </h3>
       </section>
-      <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
+
+      {viewportSizeChange ? (
+        <Image src={charts_v1} alt="Charts" className="w-full mt-4 max-h-18" />
+      ) : (
+        <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
+      )}
 
       <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-10 bg-white drop-shadow cursor-pointer">
         <Image
@@ -260,7 +234,11 @@ export default function Home() {
           </div>
           <RenderProcentile />
 
-          <Image src={bar_icon} alt={"Bar Icon"} className="h-3.5 w-auto mt-1" />
+          <Image
+            src={bar_icon}
+            alt={"Bar Icon"}
+            className="h-3.5 w-auto mt-1"
+          />
         </aside>
       </div>
 
@@ -344,7 +322,7 @@ export default function Home() {
         {data?.ethereum ? (
           <Chart data={data} startIndex={startIndex} />
         ) : (
-          <div>Loading...</div>
+          <div className="text-custom-gray mt-4">Loading...</div>
         )}
       </Suspense>
     </main>

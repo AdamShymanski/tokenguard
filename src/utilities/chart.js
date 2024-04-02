@@ -10,13 +10,8 @@ import {
   Brush,
   ResponsiveContainer,
 } from "recharts";
-import Image from "next/image";
-
 import { TbCurrencyEthereum } from "react-icons/tb";
 import { TbCurrencySolana } from "react-icons/tb";
-
-import solana_icon from "./../../public/icons/solana_icon_v1.png";
-import ethereum_icon from "./../../public/icons/ethereum_icon.png";
 
 export default function Chart({ data, startIndex }) {
   const [chartArr, setChartArr] = useState([]);
