@@ -165,7 +165,7 @@ export default function Home() {
       case 2:
         return "28 days";
       case 3:
-        return "3 months";
+        return "90 days";
       case 4:
         return "ALL";
       default:
@@ -177,25 +177,25 @@ export default function Home() {
     if (growthPercentile >= 0) {
       return (
         <div className="flex flex-row items-end w-full mt-2">
-          <h1 className="text-3xl font-bold mr-4">{growthIndex}</h1>{" "}
+          <h1 className="text-2xl font-bold mr-2">{growthIndex}</h1>{" "}
           <div className="bg-green-200 px-2.5 py-[1px] rounded mb-1">
             <p className="text-green-700 text-xs tracking-tight">
               + {growthPercentile}%
             </p>
           </div>
-          <p className="text-xs mb-1 ml-2">/ {dateRangeToDays()}</p>
+          <p className="text-[0.65rem] mb-1 ml-2">/ {dateRangeToDays()}</p>
         </div>
       );
     } else {
       return (
         <div className="flex flex-row items-end w-full mt-2">
-          <h1 className="text-3xl font-bold mr-4">{growthIndex}</h1>{" "}
+          <h1 className="text-2xl font-bold mr-2">{growthIndex}</h1>{" "}
           <div className="bg-red-200 px-2.5 py-[1px] rounded mb-1">
             <p className="text-red-700 text-xs tracking-tight">
               - {Math.abs(growthPercentile)}%
             </p>
           </div>
-          <p className="text-xs mb-1 ml-2">/ {dateRangeToDays()}</p>
+          <p className="text-[0.65rem] mb-1 ml-2">/ {dateRangeToDays()}</p>
         </div>
       );
     }
@@ -211,7 +211,7 @@ export default function Home() {
       </section>
       <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
 
-      <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-5 bg-white drop-shadow cursor-pointer">
+      <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-10 bg-white drop-shadow cursor-pointer">
         <Image
           src={ethereum_icon}
           alt="Ethereum Icon"
@@ -260,7 +260,7 @@ export default function Home() {
           </div>
           <RenderProcentile />
 
-          <Image src={bar_icon} alt={"Bar Icon"} className="h-3 w-auto mt-1" />
+          <Image src={bar_icon} alt={"Bar Icon"} className="h-3.5 w-auto mt-1" />
         </aside>
       </div>
 
