@@ -68,18 +68,19 @@ export default function Chart({ data, startIndex }) {
               display: "flex",
               alignItems: "center",
               marginLeft: "6px",
+              flexDirection: "row",
             }}
           >
-            <TbCurrencyEthereum size={22} color="#242424" />
+            <TbCurrencyEthereum size={22} color="#58D2B5" />
             <p
               className="ethereum"
               style={{
                 color: "#384354",
-                marginBottom: "4px",
-                fontWeight: "semibold",
+                fontWeight: "medium",
+                fontSize: "0.77rem",
               }}
             >
-              {`- ${payload[0].value}`}
+              {` - ${payload[0].value}`}
             </p>
           </div>
           <div
@@ -87,18 +88,20 @@ export default function Chart({ data, startIndex }) {
               display: "flex",
               alignItems: "center",
               marginLeft: "6px",
+              flexDirection: "row",
             }}
           >
-            <TbCurrencySolana size={22} color="#242424" />
+            <TbCurrencySolana size={22} color="#3886FB" />
             <p
               className="solana"
               style={{
                 color: "#384354",
-                marginBottom: "4px",
-                fontWeight: "semibold",
-              }} // Add font weight bold
+
+                fontWeight: "medium",
+                fontSize: "0.77rem",
+              }}
             >
-              {`- ${payload[1].value}`}
+              {` - ${payload[1].value}`}
             </p>
           </div>
         </div>
@@ -119,8 +122,8 @@ export default function Chart({ data, startIndex }) {
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#3B63FB" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#3B63FB" stopOpacity={0} />
+            <stop offset="5%" stopColor="#48E9C2" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#48E9C2" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#3886FB" stopOpacity={0.8} />
@@ -144,13 +147,12 @@ export default function Chart({ data, startIndex }) {
           }
         />
 
-        {/* <Tooltip formatter={(label) => label + " GI"} /> */}
         <Tooltip content={<CustomTooltip />} />
 
         <Area
           type="monotone"
           dataKey="Ethereum"
-          stroke="#3B63FB"
+          stroke="#48E9C2"
           fillOpacity={1}
           fill="url(#colorUv)"
           name="Ethereum"

@@ -55,7 +55,13 @@ export default function Home() {
           ethereum: [...data.blockchain.tg_growth_index],
           solana: [...data.cumulative.tg_growth_index],
         });
-        setGrowthIndex(data.blockchain.tg_growth_index[0].value);
+        setGrowthIndex(
+          Math.round(
+            data.blockchain.tg_growth_index[
+              data.blockchain.tg_growth_index.length - 1
+            ].value
+          )
+        );
       })
       .catch((error) => {
         console.error("Error:", error);
