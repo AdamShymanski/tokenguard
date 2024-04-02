@@ -11,7 +11,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Image from "next/image";
-import Icon from "react-crypto-icons";
+
+import { TbCurrencyEthereum } from "react-icons/tb";
+import { TbCurrencySolana } from "react-icons/tb";
 
 import solana_icon from "./../../public/icons/solana_icon_v1.png";
 import ethereum_icon from "./../../public/icons/ethereum_icon.png";
@@ -45,6 +47,8 @@ export default function Chart({ data, startIndex }) {
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
+            width: "120px",
+            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)", // Add drop shadow
           }}
         >
           <p
@@ -54,19 +58,19 @@ export default function Chart({ data, startIndex }) {
               marginBottom: "4px",
               fontFamily: "",
               fontWeight: "bold",
-              marginBotttom: 8,
+              marginBotttom: 12,
             }}
           >
             {new Date(label).toLocaleDateString()} {/* Format date */}
           </p>
           <div
-            style={{ display: "flex", alignItems: "center", marginBottom: 12 }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "6px",
+            }}
           >
-            <Image
-              src={ethereum_icon}
-              alt="Ethereum Icon"
-              className="h-10 w-auto pr-4"
-            />
+            <TbCurrencyEthereum size={22} color="#242424" />
             <p
               className="ethereum"
               style={{
@@ -78,13 +82,14 @@ export default function Chart({ data, startIndex }) {
               {`- ${payload[0].value}`}
             </p>
           </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <Image
-              src={solana_icon}
-              alt={"Solana Icon"}
-              className="h-auto w-3 pr-4"
-            /> */}
-            <Icon name="btc" size={25} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "6px",
+            }}
+          >
+            <TbCurrencySolana size={22} color="#242424" />
             <p
               className="solana"
               style={{
