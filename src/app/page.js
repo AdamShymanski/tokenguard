@@ -113,9 +113,10 @@ export default function Home() {
     for (let i = data.ethereum.length - 1; i >= 0; i--) {
       if (new Date(data.ethereum[i].date) < targetDate) {
         let growth =
-          ((data.ethereum[0].value - data.ethereum[i].value) /
+          ((data.ethereum[0].value - data.ethereum[i + 1].value) /
             data.ethereum[0].value) *
           100;
+
         growth = Math.round(growth);
 
         setGrowthPercentile(growth);
@@ -261,7 +262,6 @@ export default function Home() {
           <div className="text-custom-gray mt-4">Loading...</div>
         )}
       </Suspense>
-      
     </main>
   );
 }
