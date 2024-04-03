@@ -21,10 +21,12 @@ import DateSelector from "../utilities/dateSelector";
 import charts from "./../../public/charts.png";
 import charts_v1 from "./../../public/charts_v1.png";
 
+import bar_icon from "./../../public/icons/bar_icon.png";
+import bar_icon_v1 from "./../../public/icons/bar_icon_v1.png";
+
 //icons
 import x_icon from "./../../public/icons/x_icon.png";
 import gi_icon from "./../../public/icons/gi_icon.png";
-import bar_icon from "./../../public/icons/bar_icon.png";
 import arrow_icon from "./../../public/icons/arrow_icon.png";
 import solana_icon from "./../../public/icons/solana_icon.png";
 import metrics_icon from "./../../public/icons/metrics_icon.png";
@@ -38,15 +40,19 @@ export default function Home() {
   const [growthIndex, setGrowthIndex] = useState(0);
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
-  const [viewportSizeChange, setViewportSizeChange] = useState(
-    typeof window !== "undefined" ? window.innerWidth > 540 : true
-  );
+  const [viewportSizeChange, setViewportSizeChange] = useState(null);
 
-  const isDesktopOrLaptop = useMediaQuery({ minWidth: 540 });
+  const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 540px)" });
 
   useEffect(() => {
     setViewportSizeChange(isDesktopOrLaptop);
   }, [isDesktopOrLaptop]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setViewportSizeChange(window.innerWidth > 540);
+    }
+  }, []);
 
   const url =
     "https://corsproxy.io/?" +
@@ -186,17 +192,11 @@ export default function Home() {
           Other Metrics
         </h3>
       </section>
-      <Suspense>
-        {viewportSizeChange ? (
-          <Image
-            src={charts_v1}
-            alt="Charts"
-            className="w-full mt-4 max-h-18"
-          />
-        ) : (
-          <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
-        )}
-      </Suspense>
+      {viewportSizeChange ? (
+        <Image src={charts_v1} alt="Charts" className="w-full mt-4 max-h-18" />
+      ) : (
+        <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
+      )}
 
       <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-10 bg-white drop-shadow cursor-pointer">
         <Image
@@ -247,11 +247,25 @@ export default function Home() {
           </div>
           <RenderProcentile />
 
-          <Image
+          {/* <Image
             src={bar_icon}
             alt={"Bar Icon"}
             className="h-3.5 w-auto mt-1"
-          />
+          /> */}
+
+          {viewportSizeChange ? (
+            <Image
+              src={bar_icon}
+              alt={"Bar Icon"}
+              className="h-3.5 w-auto mt-1"
+            />
+          ) : (
+            <Image
+              src={bar_icon_v1}
+              alt={"Bar Icon"}
+              className="h-3.5 w-auto mt-1"
+            />
+          )}
         </aside>
       </div>
 
