@@ -38,19 +38,14 @@ export default function Home() {
   const [growthIndex, setGrowthIndex] = useState(0);
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
-  // ...
-
   const [viewportSizeChange, setViewportSizeChange] = useState(
-    window.innerWidth > 540
+    typeof window !== undefined ? window.innerWidth > 540: false
   );
-
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 540 });
 
   useEffect(() => {
     setViewportSizeChange(isDesktopOrLaptop);
   }, [isDesktopOrLaptop]);
-
-  // ...
 
   const url =
     "https://corsproxy.io/?" +
@@ -190,12 +185,17 @@ export default function Home() {
           Other Metrics
         </h3>
       </section>
-
-      {viewportSizeChange ? (
-        <Image src={charts_v1} alt="Charts" className="w-full mt-4 max-h-18" />
-      ) : (
-        <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
-      )}
+      <Suspense>
+        {viewportSizeChange ? (
+          <Image
+            src={charts_v1}
+            alt="Charts"
+            className="w-full mt-4 max-h-18"
+          />
+        ) : (
+          <Image src={charts} alt="Charts" className="w-full mt-4 max-h-18" />
+        )}
+      </Suspense>
 
       <article className="flex flex-row relative items-center w-full border border-slate-300 rounded p-2 mt-10 bg-white drop-shadow cursor-pointer">
         <Image
