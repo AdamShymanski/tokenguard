@@ -45,10 +45,10 @@ export default function Home() {
   const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 540px)" });
 
   const url =
-  "https://corsproxy.io/?" +
-  encodeURIComponent(
-    "https://api.tokenguard.io/db-api/growth-index/basic-timeline-data"
-  );
+    "https://corsproxy.io/?" +
+    encodeURIComponent(
+      "https://api.tokenguard.io/db-api/growth-index/basic-timeline-data"
+    );
 
   useEffect(() => {
     setViewportSizeChange(isDesktopOrLaptop);
@@ -205,9 +205,6 @@ export default function Home() {
         <div className="flex flex-col text-custom-gray">
           <h2 className="flex flex-row items-baseline text-xl font-semibold">
             Ethereum{" "}
-            <span className="text-sm ml-2">
-              {viewportSizeChange ? "Growth Index" : "GI"}
-            </span>
           </h2>
           <p className="font-light text-sm">{"[ETH]"}</p>
         </div>
