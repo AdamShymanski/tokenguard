@@ -39,8 +39,9 @@ export default function Home() {
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
   const [viewportSizeChange, setViewportSizeChange] = useState(
-    typeof window !== undefined ? window.innerWidth > 540: false
+    typeof window != "undefined" ? window.innerWidth > 540 : false
   );
+
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 540 });
 
   useEffect(() => {
