@@ -2,6 +2,8 @@
 
 ## Description
 
+![project description](https://github.com/AdamShymanski/tokenguard/assets/45077552/2ba569ad-5384-4d3b-abe2-5149b27762f1)
+
 This project is a React application that visualizes cryptocurrency data for Ethereum and Solana. The data is displayed in a chart, which is interactive and allows users to filter the data by different date ranges: 1 week, 2 weeks, 4 weeks, 3 months, and all data.
 
 Key features of the project include:
