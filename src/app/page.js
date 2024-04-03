@@ -44,6 +44,12 @@ export default function Home() {
 
   const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 540px)" });
 
+  const url =
+  "https://corsproxy.io/?" +
+  encodeURIComponent(
+    "https://api.tokenguard.io/db-api/growth-index/basic-timeline-data"
+  );
+
   useEffect(() => {
     setViewportSizeChange(isDesktopOrLaptop);
   }, [isDesktopOrLaptop]);
@@ -52,15 +58,7 @@ export default function Home() {
     if (typeof window !== "undefined") {
       setViewportSizeChange(window.innerWidth > 540);
     }
-  }, []);
 
-  const url =
-    "https://corsproxy.io/?" +
-    encodeURIComponent(
-      "https://api.tokenguard.io/db-api/growth-index/basic-timeline-data"
-    );
-
-  useEffect(() => {
     axios
       .post(url, {
         chainName: "ethereum",
@@ -246,9 +244,7 @@ export default function Home() {
               alt={"Growth Index Icon"}
               className="h-3 w-auto pr-2"
             />
-            <p className="text-xs">
-              GROWTH INDEX
-            </p>
+            <p className="text-xs">GROWTH INDEX</p>
           </div>
           <RenderProcentile />
 
