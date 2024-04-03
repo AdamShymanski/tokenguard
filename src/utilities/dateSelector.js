@@ -26,5 +26,4 @@ export default function DateSelector({ setDateRange, dateRange }) {
       ))}
     </aside>
   );
-
 }

@@ -38,8 +38,8 @@ export default function Home() {
   const [growthIndex, setGrowthIndex] = useState(0);
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
-  const viewportSizeChange = useMediaQuery({ minWidth: 761 });
-
+  const viewportSizeChange = useMediaQuery({ minWidth: 540 });
+  
   const url =
     "https://corsproxy.io/?" +
     encodeURIComponent(
