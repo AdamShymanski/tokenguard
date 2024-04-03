@@ -38,7 +38,19 @@ export default function Home() {
   const [growthIndex, setGrowthIndex] = useState(0);
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
-  const viewportSizeChange = useMediaQuery({ minWidth: 540 });
+  // ...
+
+  const [viewportSizeChange, setViewportSizeChange] = useState(
+    window.innerWidth > 540
+  );
+
+  const isDesktopOrLaptop = useMediaQuery({ minWidth: 540 });
+
+  useEffect(() => {
+    setViewportSizeChange(isDesktopOrLaptop);
+  }, [isDesktopOrLaptop]);
+
+  // ...
 
   const url =
     "https://corsproxy.io/?" +
