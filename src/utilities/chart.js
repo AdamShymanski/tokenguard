@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import {
   AreaChart,
-  LineChart,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Area,
-  Line,
   Brush,
   ResponsiveContainer,
 } from "recharts";
@@ -112,12 +110,12 @@ export default function Chart({ data, startIndex }) {
 
   return (
     <ResponsiveContainer width={"100%"} height={340}>
-      <LineChart
+      <AreaChart
         data={chartArr}
         layout="horizontal"
         margin={{ top: 10, right: 0, left: -30, bottom: 0 }}
       >
-        {/* <defs>
+        <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#48E9C2" stopOpacity={0.8} />
             <stop offset="95%" stopColor="#48E9C2" stopOpacity={0} />
@@ -126,7 +124,7 @@ export default function Chart({ data, startIndex }) {
             <stop offset="5%" stopColor="#3886FB" stopOpacity={0.8} />
             <stop offset="95%" stopColor="#3886FB" stopOpacity={0} />
           </linearGradient>
-        </defs> */}
+        </defs>
 
         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
         <YAxis name="Date" tick={{ fontSize: 12 }} />
@@ -146,7 +144,7 @@ export default function Chart({ data, startIndex }) {
 
         <Tooltip content={<CustomTooltip />} />
 
-        <Line
+        <Area
           type="monotone"
           dataKey="Ethereum"
           stroke="#48E9C2"
@@ -154,7 +152,7 @@ export default function Chart({ data, startIndex }) {
           fill="url(#colorUv)"
           name="Ethereum"
         />
-        <Line
+        <Area
           type="monotone"
           dataKey="Solana"
           stroke="#3886FB"
@@ -162,62 +160,7 @@ export default function Chart({ data, startIndex }) {
           fill="url(#colorPv)"
           name="Solana"
         />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
   );
-  // return (
-  //   <ResponsiveContainer width={"100%"} height={340}>
-  //     <AreaChart
-  //       data={chartArr}
-  //       layout="horizontal"
-  //       margin={{ top: 10, right: 0, left: -30, bottom: 0 }}
-  //     >
-  //       <defs>
-  //         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-  //           <stop offset="5%" stopColor="#48E9C2" stopOpacity={0.8} />
-  //           <stop offset="95%" stopColor="#48E9C2" stopOpacity={0} />
-  //         </linearGradient>
-  //         <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-  //           <stop offset="5%" stopColor="#3886FB" stopOpacity={0.8} />
-  //           <stop offset="95%" stopColor="#3886FB" stopOpacity={0} />
-  //         </linearGradient>
-  //       </defs>
-
-  //       <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-  //       <YAxis name="Date" tick={{ fontSize: 12 }} />
-
-  //       <CartesianGrid strokeDasharray="3 3" />
-  //       <Brush
-  //         stroke={"#5F80FF"}
-  //         fill={"#F7F9FB"}
-  //         travellerWidth={10}
-  //         endIndex={chartArr.length - 1}
-  //         startIndex={
-  //           chartArr.length - startIndex - 3 >= 0
-  //             ? chartArr.length - startIndex - 3
-  //             : 0
-  //         }
-  //       />
-
-  //       <Tooltip content={<CustomTooltip />} />
-
-  //       <Area
-  //         type="monotone"
-  //         dataKey="Ethereum"
-  //         stroke="#48E9C2"
-  //         fillOpacity={1}
-  //         fill="url(#colorUv)"
-  //         name="Ethereum"
-  //       />
-  //       <Area
-  //         type="monotone"
-  //         dataKey="Solana"
-  //         stroke="#3886FB"
-  //         fillOpacity={1}
-  //         fill="url(#colorPv)"
-  //         name="Solana"
-  //       />
-  //     </AreaChart>
-  //   </ResponsiveContainer>
-  // );
 }
