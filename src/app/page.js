@@ -206,7 +206,10 @@ export default function Home() {
         />
         <div className="flex flex-col text-custom-gray">
           <h2 className="flex flex-row items-baseline text-xl font-semibold">
-            Ethereum <span className="text-sm ml-2"> Growth Index</span>
+            Ethereum{" "}
+            <span className="text-sm ml-2">
+              {viewportSizeChange ? "Growth Index" : "GI"}
+            </span>
           </h2>
           <p className="font-light text-sm">{"[ETH]"}</p>
         </div>
@@ -243,7 +246,9 @@ export default function Home() {
               alt={"Growth Index Icon"}
               className="h-3 w-auto pr-2"
             />
-            <p className="text-xs">GROWTH INDEX</p>
+            <p className="text-xs">
+              GROWTH INDEX
+            </p>
           </div>
           <RenderProcentile />
 
