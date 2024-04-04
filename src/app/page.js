@@ -14,8 +14,9 @@ import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 
 //utilities
-const Chart = React.lazy(() => import("../utilities/chart"));
+import BarLoader from "react-spinners/BarLoader";
 import DateSelector from "../utilities/dateSelector";
+const Chart = React.lazy(() => import("../utilities/chart"));
 
 //pngs
 import charts from "./../../public/charts.png";
@@ -40,8 +41,7 @@ export default function Home() {
   const [growthIndex, setGrowthIndex] = useState(0);
   const [growthPercentile, setGrowthPercentile] = useState(0);
 
-  const [viewportSizeChange, setViewportSizeChange] = useState(null);
-
+  const [viewportSizeChange, setViewportSizeChange] = useState(true);
   const isDesktopOrLaptop = useMediaQuery({ query: "(min-width: 540px)" });
 
   const url =
@@ -190,6 +190,7 @@ export default function Home() {
           Other Metrics
         </h3>
       </section>
+
       {viewportSizeChange ? (
         <Image src={charts_v1} alt="Charts" className="w-full mt-4 max-h-18" />
       ) : (
@@ -279,12 +280,22 @@ export default function Home() {
       <DateSelector dateRange={dateRange} setDateRange={setDateRange} />
 
       <Suspense
-        fallback={<div className="text-custom-gray mt-4">Loading...</div>}
+        fallback={
+          <BarLoader
+            color={"#51ABFF"}
+            className="mt-[170px] ml-[45%]"
+            size={150}
+          />
+        }
       >
         {data?.ethereum ? (
           <Chart data={data} startIndex={startIndex} />
         ) : (
-          <div className="text-custom-gray mt-4">Loading...</div>
+          <BarLoader
+            color={"#51ABFF"}
+            className="mt-[170px] ml-[45%]"
+            size={150}
+          />
         )}
       </Suspense>
     </main>

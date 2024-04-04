@@ -66,7 +66,7 @@ export default function Chart({ data, startIndex }) {
               flexDirection: "row",
             }}
           >
-            <TbCurrencyEthereum size={22} color="#58D2B5" />
+            <TbCurrencyEthereum size={22} color="#38BB3D" />
             <p
               className="ethereum"
               style={{
