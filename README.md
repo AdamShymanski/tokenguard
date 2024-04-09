@@ -4,7 +4,7 @@
 
 ![project description](https://github.com/AdamShymanski/tokenguard/assets/45077552/873ec936-3666-4bc7-9b2f-62d7e1f5f573)
 
-![image](https://github.com/AdamShymanski/tokenguard/assets/45077552/b78f87ba-db4f-4d34-8573-0d756719a9c6)
+![image](https://github.com/AdamShymanski/tokenguard/assets/45077552/1cf930bd-1c71-4f50-a0dc-b1974dce8480)
 
 
 
