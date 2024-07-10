@@ -1,4 +1,4 @@
-# Tokenguard - Recruitment
+# Tokenguard
 
 ## Description
 
